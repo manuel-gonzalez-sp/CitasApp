@@ -4,13 +4,27 @@ import (
 	"citasapp/internal/domain/entity"
 	"citasapp/internal/domain/repository"
 	"context"
+
+	"github.com/upper/db/v4"
 )
 
-type SQLiteUserRepository struct{}
+type SQLiteUserRepository struct {
+	db db.Session
+}
 
-// Create implements repository.UserRepository.
-func (*SQLiteUserRepository) Create(ctx context.Context, entity *entity.User) (*entity.User, error) {
-	panic("unimplemented")
+func NewSQLiteUserRepository(db db.Session) repository.UserRepository {
+	return &SQLiteUserRepository{
+		db: db,
+	}
+}
+
+func (repo *SQLiteUserRepository) Create(ctx context.Context, entity *entity.User) (*entity.User, error) {
+	collection := repo.db.Collection("users")
+	_, err := collection.Insert(entity)
+	if err != nil {
+		return nil, err
+	}
+	return entity, nil
 }
 
 // DeleteByID implements repository.UserRepository.
@@ -31,8 +45,4 @@ func (*SQLiteUserRepository) FindByID(ctx context.Context, id string) (*entity.U
 // UpdateByID implements repository.UserRepository.
 func (*SQLiteUserRepository) UpdateByID(ctx context.Context, id string, user *entity.User) (*entity.User, error) {
 	panic("unimplemented")
-}
-
-func NewSQLiteUserRepository() repository.UserRepository {
-	return &SQLiteUserRepository{}
 }

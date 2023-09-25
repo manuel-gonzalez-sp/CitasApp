@@ -3,8 +3,7 @@ package transport
 import (
 	"citasapp/internal"
 	"citasapp/internal/application/command"
-	"citasapp/internal/application/dto"
-	"encoding/json"
+	"citasapp/internal/infra/utils"
 	"net/http"
 )
 
@@ -13,32 +12,28 @@ type CreateUserRequest struct {
 	LastName  string `json:"lastName"`
 }
 
-type CreateUserResponse struct {
-	dto.UserDTO
-}
-
 func createUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
-		comm, err := command.NewCreateUserCommand("yomero", "kwamero")
-
+		input, err := utils.GetRequestBody[CreateUserRequest](r)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			utils.WriteErrorResponse(w, http.StatusBadRequest)
+			return
 		}
 
-		user, err := app.Command.CreateUser(ctx, comm)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
+		comm, commErr := command.NewCreateUserCommand(input.FirstName, input.LastName)
+		if commErr != nil {
+			utils.WriteErrorResponse(w, http.StatusBadRequest)
+			return
 		}
 
-		out, err := json.Marshal(user)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
+		user, userErr := app.CreateUser(ctx, comm)
+		if userErr != nil {
+			utils.WriteErrorResponse(w, http.StatusInternalServerError)
+			return
 		}
 
-		w.Header().Add("content-type", "application/json")
-		w.Write(out)
-
+		utils.WriteJSONResponse(w, http.StatusOK, user)
 	}
 }

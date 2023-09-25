@@ -7,21 +7,18 @@ import (
 )
 
 type CitasApp struct {
-	Command command.CommandHandler
+	command.Commander
 }
 
 func NewCitasApp() (*CitasApp, error) {
 
-	userRepo := persistence.NewSQLiteUserRepository()
-
-	command := &command.DefaultCommandHandler{
-		UserRepo: userRepo,
-	}
+	userRepo := persistence.NewSQLiteUserRepository(persistence.Session)
 
 	app := &CitasApp{
-		Command: command,
+		Commander: &command.DefaultCommander{
+			UserRepo: userRepo,
+		},
 	}
-
 	return app, nil
 }
 

@@ -7,29 +7,26 @@ import (
 	"context"
 )
 
-type CreateUserCommand struct {
+type createUserCommand struct {
 	firstName string `validate:"required"`
 	lastName  string `validate:"required"`
 }
 
-func NewCreateUserCommand(firstName string, lastName string) (*CreateUserCommand, error) {
-	cmd := &CreateUserCommand{
+func NewCreateUserCommand(firstName, lastName string) (*createUserCommand, error) {
+	cmd := &createUserCommand{
 		firstName: firstName,
 		lastName:  lastName,
 	}
-	if err := utils.Validate.Struct(cmd); err != nil {
+	if err := utils.Validator.Struct(cmd); err != nil {
 		return nil, err
 	}
 	return cmd, nil
 }
 
-func (cmd *CreateUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user, err := userRepo.Create(ctx, entity.NewUser(
-		cmd.firstName,
-		cmd.lastName,
-	))
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
+func (cmd *createUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
+	user, err := userRepo.Create(ctx, &entity.User{
+		FirstName: cmd.firstName,
+		LastName:  cmd.lastName,
+	})
+	return user, err
 }
