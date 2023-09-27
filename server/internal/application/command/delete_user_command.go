@@ -1,7 +1,6 @@
 package command
 
 import (
-	"citasapp/internal/domain/entity"
 	"citasapp/internal/domain/repository"
 	"citasapp/internal/infra/utils"
 	"context"
@@ -23,7 +22,6 @@ func NewDeleteUserCommand(ID uuid.UUID) (*deleteUserCommand, error) {
 	return cmd, nil
 }
 
-func (cmd *deleteUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user, err := userRepo.DeleteByID(ctx, cmd.ID.String())
-	return user, err
+func (cmd *deleteUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) error {
+	return userRepo.DeleteByID(ctx, cmd.ID)
 }

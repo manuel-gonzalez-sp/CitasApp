@@ -24,9 +24,9 @@ func NewCreateUserCommand(firstName, lastName string) (*createUserCommand, error
 }
 
 func (cmd *createUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user, err := userRepo.Create(ctx, &entity.User{
-		FirstName: cmd.firstName,
-		LastName:  cmd.lastName,
-	})
-	return user, err
+	user := entity.NewUser(cmd.firstName, cmd.lastName)
+	if err := userRepo.Create(ctx, user); err != nil {
+		return nil, err
+	}
+	return user, nil
 }

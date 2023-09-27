@@ -9,12 +9,12 @@ import (
 func main() {
 	app, err := internal.NewCitasApp()
 	if err != nil {
-		utils.Logger.Fatal("internal.NewCitasApp errored", "err", err)
+		utils.Logger.Fatalf("unable to create CitasApp: %v\n", err)
 	}
 
 	router := transport.HttpRouter(app)
 
 	if err := app.Run(router); err != nil {
-		utils.Logger.Fatal("service.Run errored", "err", err)
+		utils.Logger.Fatalf("unable to Run CitasApp: %v\n", err)
 	}
 }

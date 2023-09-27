@@ -13,16 +13,16 @@ func listUsersHandler(app *internal.CitasApp) http.HandlerFunc {
 
 		comm, commErr := command.NewListUsersCommand()
 		if commErr != nil {
-			utils.WriteErrorResponse(w, http.StatusBadRequest)
+			utils.WriteError(w, http.StatusBadRequest, commErr)
 			return
 		}
 
 		users, usersErr := app.ListUsers(ctx, comm)
 		if usersErr != nil {
-			utils.WriteErrorResponse(w, http.StatusInternalServerError)
+			utils.WriteError(w, http.StatusInternalServerError, usersErr)
 			return
 		}
 
-		utils.WriteJSONResponse(w, http.StatusOK, users)
+		utils.WriteResponse(w, http.StatusOK, users...)
 	}
 }

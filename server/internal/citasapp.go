@@ -12,7 +12,7 @@ type CitasApp struct {
 
 func NewCitasApp() (*CitasApp, error) {
 
-	userRepo := persistence.NewSQLiteUserRepository(persistence.Session)
+	userRepo := persistence.NewSQLiteUserRepository(persistence.Database)
 
 	app := &CitasApp{
 		Commander: &command.DefaultCommander{

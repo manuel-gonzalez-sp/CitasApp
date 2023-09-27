@@ -24,6 +24,6 @@ func NewGetUserCommand(ID uuid.UUID) (*getUserCommand, error) {
 }
 
 func (cmd *getUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user, err := userRepo.FindByID(ctx, cmd.ID.String())
+	user, err := userRepo.FindByID(ctx, cmd.ID)
 	return user, err
 }

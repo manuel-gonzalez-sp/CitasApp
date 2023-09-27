@@ -11,7 +11,7 @@ type Commander interface {
 	CreateUser(ctx context.Context, cmd *createUserCommand) (*entity.User, error)
 	GetUser(ctx context.Context, cmd *getUserCommand) (*entity.User, error)
 	ListUsers(ctx context.Context, cmd *listUsersCommand) ([]*entity.User, error)
-	DeleteUser(ctx context.Context, cmd *deleteUserCommand) (*entity.User, error)
+	DeleteUser(ctx context.Context, cmd *deleteUserCommand) error
 }
 
 // DefaultCommanderis the default implementation of CommandHandler
@@ -31,6 +31,6 @@ func (handler *DefaultCommander) ListUsers(ctx context.Context, cmd *listUsersCo
 	return cmd.Handle(ctx, handler.UserRepo)
 }
 
-func (handler *DefaultCommander) DeleteUser(ctx context.Context, cmd *deleteUserCommand) (*entity.User, error) {
+func (handler *DefaultCommander) DeleteUser(ctx context.Context, cmd *deleteUserCommand) error {
 	return cmd.Handle(ctx, handler.UserRepo)
 }
