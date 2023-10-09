@@ -8,8 +8,8 @@ import (
 )
 
 type CreateUserRequest struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	FirstName string `json:"firstName" validate:"required"`
+	LastName  string `json:"lastName" validate:"required"`
 }
 
 type CreateUserResponse struct {

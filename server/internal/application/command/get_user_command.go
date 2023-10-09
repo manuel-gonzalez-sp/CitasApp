@@ -17,7 +17,7 @@ func NewGetUserCommand(ID uuid.UUID) (*getUserCommand, error) {
 	cmd := &getUserCommand{
 		ID: ID,
 	}
-	if err := utils.Validator.Struct(cmd); err != nil {
+	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
 	}
 	return cmd, nil

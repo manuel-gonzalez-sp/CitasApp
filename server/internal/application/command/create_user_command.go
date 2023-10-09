@@ -17,7 +17,7 @@ func NewCreateUserCommand(firstName, lastName string) (*createUserCommand, error
 		firstName: firstName,
 		lastName:  lastName,
 	}
-	if err := utils.Validator.Struct(cmd); err != nil {
+	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
 	}
 	return cmd, nil

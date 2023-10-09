@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
+
+	"go.uber.org/multierr"
 )
 
 // TODO:  HTTP filters/sorting
 type Response[T interface{}] struct {
 	Data   []T      `json:"data,omitempty"`
 	Errors []string `json:"errors,omitempty"`
-	Meta   Meta     `json:"meta,omitempty"`
+	Meta   Meta     `json:"meta"`
 }
 type Meta struct {
 	Status    int    `json:"status"`
@@ -28,10 +30,16 @@ func newMeta(statusCode int) Meta {
 	}
 }
 
-func GetRequestBody[T any](r *http.Request) (T, error) {
-	var value T
+func GetRequestBody[T interface{}](r *http.Request) (value T, err error) {
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&value)
+	decodeErr := decoder.Decode(&value)
+	if decodeErr != nil {
+		err = multierr.Append(err, decodeErr)
+	}
+	validationErr := ValidateStruct(value)
+	if validationErr != nil {
+		err = multierr.Append(err, validationErr)
+	}
 	return value, err
 }
 
@@ -43,13 +51,14 @@ func WriteResponse[T interface{}](w http.ResponseWriter, statusCode int, data ..
 	WriteJSON(w, statusCode, response)
 }
 
-func WriteError(w http.ResponseWriter, statusCode int, errors ...error) {
-	var responseErrors []string
-	for _, err := range errors {
-		responseErrors = append(responseErrors, err.Error())
+func WriteError(w http.ResponseWriter, statusCode int, err error) {
+	var responseErrs []string
+	errs := multierr.Errors(err)
+	for _, err := range errs {
+		responseErrs = append(responseErrs, err.Error())
 	}
 	response := &Response[any]{
-		Errors: responseErrors,
+		Errors: responseErrs,
 		Meta:   newMeta(statusCode),
 	}
 	WriteJSON(w, statusCode, response)

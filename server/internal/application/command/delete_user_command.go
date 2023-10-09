@@ -16,7 +16,7 @@ func NewDeleteUserCommand(ID uuid.UUID) (*deleteUserCommand, error) {
 	cmd := &deleteUserCommand{
 		ID: ID,
 	}
-	if err := utils.Validator.Struct(cmd); err != nil {
+	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
 	}
 	return cmd, nil

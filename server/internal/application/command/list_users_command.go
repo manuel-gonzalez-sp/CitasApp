@@ -13,7 +13,7 @@ type listUsersCommand struct {
 
 func NewListUsersCommand() (*listUsersCommand, error) {
 	cmd := &listUsersCommand{}
-	if err := utils.Validator.Struct(cmd); err != nil {
+	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
 	}
 	return cmd, nil
