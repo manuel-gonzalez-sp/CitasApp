@@ -1,0 +1,48 @@
+definitions:
+  entity.User:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a HTTP API for CitasApp.
+  title: CitasApp API
+  version: "1.0"
+paths:
+  /user:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.User'
+            type: array
+      summary: Get all users
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+      summary: Create a new User
+  /user/{id}:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+      summary: Get a single User based on the provided ID
+swagger: "2.0"

@@ -3,23 +3,20 @@ package transport
 import (
 	"citasapp/internal"
 	"citasapp/internal/application/command"
+	"citasapp/internal/application/dto"
 	"citasapp/internal/infra/utils"
 	"net/http"
 )
 
-type CreateUserRequest struct {
-	FirstName string `json:"firstName" validate:"required"`
-	LastName  string `json:"lastName" validate:"required"`
-}
-
-type CreateUserResponse struct {
-}
-
+// @Summary	Create a new User
+// @Produce	json
+// @Success	200 {object}	entity.User
+// @Router		/user [post]
 func createUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
-		input, inputErr := utils.GetRequestBody[CreateUserRequest](r)
+		input, inputErr := utils.GetRequestBody[dto.CreateUserDTO](r)
 		if inputErr != nil {
 			utils.WriteError(w, http.StatusBadRequest, inputErr)
 			return

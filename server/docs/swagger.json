@@ -1,0 +1,76 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a HTTP API for CitasApp.",
+        "title": "CitasApp API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/user": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.User"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create a new User",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a single User based on the provided ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.User": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

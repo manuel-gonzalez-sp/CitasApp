@@ -3,6 +3,7 @@ package transport
 import (
 	"citasapp/internal"
 	"citasapp/internal/application/command"
+	"citasapp/internal/application/dto"
 	"citasapp/internal/infra/utils"
 	"net/http"
 
@@ -10,11 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary	Get a single User based on the provided ID
-// @Produce	json
-// @Success	200	{object} entity.User
-// @Router		/user/{id} [get]
-func getUserHandler(app *internal.CitasApp) http.HandlerFunc {
+func updateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		vars := mux.Vars(r)
@@ -25,13 +22,19 @@ func getUserHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		comm, commErr := command.NewGetUserCommand(ID)
+		input, inputErr := utils.GetRequestBody[dto.UpdateUserDTO](r)
+		if inputErr != nil {
+			utils.WriteError(w, http.StatusBadRequest, inputErr)
+			return
+		}
+
+		comm, commErr := command.NewUpdateUserCommand(ID, input.FirstName, input.LastName)
 		if commErr != nil {
 			utils.WriteError(w, http.StatusBadRequest, commErr)
 			return
 		}
 
-		user, userErr := app.GetUser(ctx, comm)
+		user, userErr := app.UpdateUser(ctx, comm)
 		if userErr != nil {
 			utils.WriteError(w, http.StatusInternalServerError, userErr)
 			return

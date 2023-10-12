@@ -8,7 +8,7 @@ import (
 )
 
 type UserRepository interface {
-	Create(ctx context.Context, entity *entity.User) error
+	Create(ctx context.Context, user *entity.User) error
 	FindByID(ctx context.Context, ID uuid.UUID) (*entity.User, error)
 	FindAll(ctx context.Context) ([]*entity.User, error)
 	UpdateByID(ctx context.Context, ID uuid.UUID, user *entity.User) (*entity.User, error)

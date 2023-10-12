@@ -10,12 +10,12 @@ import (
 )
 
 type getUserCommand struct {
-	ID uuid.UUID `validate:"required"`
+	userID uuid.UUID `validate:"required"`
 }
 
-func NewGetUserCommand(ID uuid.UUID) (*getUserCommand, error) {
+func NewGetUserCommand(userID uuid.UUID) (*getUserCommand, error) {
 	cmd := &getUserCommand{
-		ID: ID,
+		userID: userID,
 	}
 	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
@@ -24,6 +24,6 @@ func NewGetUserCommand(ID uuid.UUID) (*getUserCommand, error) {
 }
 
 func (cmd *getUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user, err := userRepo.FindByID(ctx, cmd.ID)
+	user, err := userRepo.FindByID(ctx, cmd.userID)
 	return user, err
 }

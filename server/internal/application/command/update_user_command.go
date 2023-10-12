@@ -17,7 +17,9 @@ type updateUserCommand struct {
 
 func NewUpdateUserCommand(ID uuid.UUID, firstName, lastName string) (*updateUserCommand, error) {
 	cmd := &updateUserCommand{
-		ID: ID,
+		ID:        ID,
+		firstName: firstName,
+		lastName:  lastName,
 	}
 	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err

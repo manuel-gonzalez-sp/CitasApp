@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+//	@Summary	Get all users
+//	@Produce	json
+//	@Success	200	{array}	entity.User
+//	@Router		/user [get]
 func listUsersHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()

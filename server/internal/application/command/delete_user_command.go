@@ -9,12 +9,12 @@ import (
 )
 
 type deleteUserCommand struct {
-	ID uuid.UUID `validate:"required"`
+	userID uuid.UUID `validate:"required"`
 }
 
-func NewDeleteUserCommand(ID uuid.UUID) (*deleteUserCommand, error) {
+func NewDeleteUserCommand(userID uuid.UUID) (*deleteUserCommand, error) {
 	cmd := &deleteUserCommand{
-		ID: ID,
+		userID: userID,
 	}
 	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
@@ -23,5 +23,5 @@ func NewDeleteUserCommand(ID uuid.UUID) (*deleteUserCommand, error) {
 }
 
 func (cmd *deleteUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) error {
-	return userRepo.DeleteByID(ctx, cmd.ID)
+	return userRepo.DeleteByID(ctx, cmd.userID)
 }

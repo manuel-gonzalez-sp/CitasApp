@@ -10,11 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary	Get a single User based on the provided ID
-// @Produce	json
-// @Success	200	{object} entity.User
-// @Router		/user/{id} [get]
-func getUserHandler(app *internal.CitasApp) http.HandlerFunc {
+func readMessageHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		vars := mux.Vars(r)
@@ -25,18 +21,18 @@ func getUserHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		comm, commErr := command.NewGetUserCommand(ID)
+		comm, commErr := command.NewReadMessageCommand(ID)
 		if commErr != nil {
 			utils.WriteError(w, http.StatusBadRequest, commErr)
 			return
 		}
 
-		user, userErr := app.GetUser(ctx, comm)
-		if userErr != nil {
-			utils.WriteError(w, http.StatusInternalServerError, userErr)
+		message, messageErr := app.ReadMessage(ctx, comm)
+		if messageErr != nil {
+			utils.WriteError(w, http.StatusInternalServerError, messageErr)
 			return
 		}
 
-		utils.WriteResponse(w, http.StatusOK, user)
+		utils.WriteResponse(w, http.StatusOK, message)
 	}
 }
