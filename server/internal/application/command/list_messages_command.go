@@ -10,8 +10,7 @@ import (
 )
 
 type listMessagesCommand struct {
-	senderID   uuid.UUID
-	receiverID uuid.UUID
+	userID uuid.UUID
 	// TOOD: filters, sorting, etc.
 }
 
@@ -23,23 +22,17 @@ func NewListMessagesCommand(params ...utils.Param[listMessagesCommand]) (*listMe
 	return cmd, nil
 }
 
-func WithSenderID(ID uuid.UUID) utils.Param[listMessagesCommand] {
+func WithUserID(ID uuid.UUID) utils.Param[listMessagesCommand] {
 	return func(cmd *listMessagesCommand) {
-		cmd.senderID = ID
-	}
-}
-
-func WithReceiverID(ID uuid.UUID) utils.Param[listMessagesCommand] {
-	return func(cmd *listMessagesCommand) {
-		cmd.receiverID = ID
+		cmd.userID = ID
 	}
 }
 
 func (cmd *listMessagesCommand) Handle(ctx context.Context, messageRepo repository.MessageRepository) ([]*entity.Message, error) {
-	filters := repository.FindAllMessagesFilters{
-		SenderID:   cmd.senderID,
-		ReceiverID: cmd.receiverID,
+	if cmd.userID == uuid.Nil {
+		user, err := messageRepo.FindAll(ctx)
+		return user, err
 	}
-	user, err := messageRepo.FindAll(ctx, filters)
+	user, err := messageRepo.FindByUserID(ctx, cmd.userID)
 	return user, err
 }

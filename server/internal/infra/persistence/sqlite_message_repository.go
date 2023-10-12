@@ -34,16 +34,21 @@ func (repo *sqliteMessageRepository) DeleteByID(ctx context.Context, ID uuid.UUI
 	return result.Error
 }
 
-func (repo *sqliteMessageRepository) FindAll(ctx context.Context, filters repository.FindAllMessagesFilters) ([]*entity.Message, error) {
+func (repo *sqliteMessageRepository) FindAll(ctx context.Context) ([]*entity.Message, error) {
 	var messages []*entity.Message
-	result := repo.db
-	if filters.ReceiverID != uuid.Nil {
-		result = result.Where("ReceiverID = ?", filters.ReceiverID)
+	result := repo.db.Find(&messages)
+	if result.Error != nil {
+		return nil, result.Error
 	}
-	if filters.SenderID != uuid.Nil {
-		result = result.Where("SenderID = ?", filters.SenderID)
-	}
-	result = result.Find(&messages)
+	return messages, nil
+}
+
+func (repo *sqliteMessageRepository) FindByUserID(ctx context.Context, userID uuid.UUID) ([]*entity.Message, error) {
+	var messages []*entity.Message
+	result := repo.db.
+		Where("ReceiverID = ?", userID).
+		Or("SenderID = ?", userID).
+		Find(&messages)
 	if result.Error != nil {
 		return nil, result.Error
 	}

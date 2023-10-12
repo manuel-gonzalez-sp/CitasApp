@@ -15,10 +15,7 @@ func listMessagesHandler(app *internal.CitasApp) http.HandlerFunc {
 
 		userID := uuid.New() // TODO: Replace with current logged in user
 
-		comm, commErr := command.NewListMessagesCommand(
-			command.WithReceiverID(userID),
-			command.WithSenderID(userID),
-		)
+		comm, commErr := command.NewListMessagesCommand(command.WithUserID(userID))
 		if commErr != nil {
 			utils.WriteError(w, http.StatusBadRequest, commErr)
 			return
