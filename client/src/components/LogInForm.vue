@@ -46,6 +46,9 @@ async function handleLogIn() {
     })
     if (data) {
         alert('Ingresaste correctamente!')
+        window.location.href = '/'
+    } else {
+        alert('Hubo un error!')
     }
 };
 </script>

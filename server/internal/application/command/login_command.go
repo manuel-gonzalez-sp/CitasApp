@@ -35,7 +35,7 @@ func (cmd *logInCommand) Handle(ctx context.Context, userRepo repository.UserRep
 
 	}
 	loggedIn := &dto.LoggedInDTO{
-		User:     *user,
+		UserDTO:  *dto.ToUserDTO(user),
 		JWTToken: token,
 	}
 	return loggedIn, err

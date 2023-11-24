@@ -3,11 +3,6 @@ import { Image } from "astro:assets";
 import background from "../../assets/auth_background.png";
 import AuthForm from "../../components/AuthForm.vue";
 import CleanLayout from "../../layouts/CleanLayout.astro";
-import { sessionStore } from "../../services/session-service";
-
-if (sessionStore.value?.jwtToken) {
-  return Astro.redirect("/");
-}
 ---
 
 <CleanLayout title="Auth">

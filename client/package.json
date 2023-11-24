@@ -13,7 +13,9 @@
     "@astrojs/check": "^0.3.1",
     "@astrojs/tailwind": "^5.0.2",
     "@astrojs/vue": "^3.0.4",
+    "@nanostores/vue": "^0.10.0",
     "astro": "^3.6.0",
+    "nanostores": "^0.9.5",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.3.2",
     "vue": "^3.3.8"

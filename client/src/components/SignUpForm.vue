@@ -55,6 +55,9 @@ async function handleSignUp() {
     })
     if (data) {
         alert('Te registraste correctamente!')
+        window.location.href = '/'
+    } else {
+        alert('Hubo un error!')
     }
 };
 </script>

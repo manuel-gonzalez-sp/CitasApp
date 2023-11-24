@@ -38,7 +38,7 @@ func (cmd *signUpCommand) Handle(ctx context.Context, userRepo repository.UserRe
 		return nil, utils.ErrLogInGeneratingToken
 	}
 	loggedIn := &dto.LoggedInDTO{
-		User:     *user,
+		UserDTO:  *dto.ToUserDTO(user),
 		JWTToken: token,
 	}
 	return loggedIn, err

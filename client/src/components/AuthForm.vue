@@ -8,10 +8,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { getSession } from '../services/session-service';
 import LogInForm from './LogInForm.vue';
 import SignUpForm from './SignUpForm.vue';
 
 const isLogIn = ref(true);
+
+onMounted(() => {
+    const session = getSession();
+    if (session) {
+        window.location.href = '/'
+    }
+})
 
 </script>
