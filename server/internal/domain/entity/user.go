@@ -14,19 +14,10 @@ type User struct {
 	Gender       string
 	Introduction string
 	LookingFor   string
-	//Interests    []string
-	City    string
-	Country string
-	//Photos       []Photo
+	City         string
+	Country      string
 	CreatedAt    time.Time
-	ActiveAt     time.Time
-	PasswordHash []byte
-}
-
-func NewUser(username string, fullname string) *User {
-	return &User{
-		ID:       uuid.New(),
-		Username: username,
-		Fullname: fullname,
-	}
+	PasswordHash string
+	//Interests    []string
+	//Photos       []Photo
 }

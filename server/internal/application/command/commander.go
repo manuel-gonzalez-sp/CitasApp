@@ -11,6 +11,7 @@ import (
 type Commander interface {
 	// Authentication commands
 	LogIn(ctx context.Context, cmd *logInCommand) (*dto.LoggedInDTO, error)
+	SignUp(ctx context.Context, cmd *signUpCommand) (*dto.LoggedInDTO, error)
 
 	// User commands
 	CreateUser(ctx context.Context, cmd *createUserCommand) (*entity.User, error)
@@ -27,6 +28,9 @@ type DefaultCommander struct {
 
 // Authentication Commands
 func (handler *DefaultCommander) LogIn(ctx context.Context, cmd *logInCommand) (*dto.LoggedInDTO, error) {
+	return cmd.Handle(ctx, handler.UserRepo)
+}
+func (handler *DefaultCommander) SignUp(ctx context.Context, cmd *signUpCommand) (*dto.LoggedInDTO, error) {
 	return cmd.Handle(ctx, handler.UserRepo)
 }
 

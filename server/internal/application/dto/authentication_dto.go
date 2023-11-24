@@ -13,6 +13,6 @@ type LoggedInDTO struct {
 }
 
 type SignUpDTO struct {
-	Username string `json:"username" validate:"required"`
+	CreateUserDTO
 	Password string `json:"password" validate:"required"`
 }

@@ -17,13 +17,65 @@ const docTemplate = `{
     "paths": {
         "/login": {
             "post": {
+                "description": "Logs in a user with provided credentials.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Log-in user",
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "description": "Login Credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LogInDTO"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful login",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoggedInDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "post": {
+                "description": "Signs up a user with provided credentials.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User signup",
+                "parameters": [
+                    {
+                        "description": "Signup Credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SignUpDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful signup",
                         "schema": {
                             "$ref": "#/definitions/dto.LoggedInDTO"
                         }
@@ -33,8 +85,19 @@ const docTemplate = `{
         },
         "/user": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Users"
                 ],
                 "summary": "Get all users",
                 "responses": {
@@ -50,10 +113,32 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create a new User",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a new User",
+                "parameters": [
+                    {
+                        "description": "Update DTO",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateUserDTO"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -66,8 +151,19 @@ const docTemplate = `{
         },
         "/user/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Users"
                 ],
                 "summary": "Get a single User based on the provided ID",
                 "responses": {
@@ -82,12 +178,57 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CreateUserDTO": {
+            "type": "object",
+            "required": [
+                "fullname",
+                "username"
+            ],
+            "properties": {
+                "birthDate": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "introduction": {
+                    "type": "string"
+                },
+                "lookingFor": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LogInDTO": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.LoggedInDTO": {
             "type": "object",
             "properties": {
-                "activeAt": {
-                    "type": "string"
-                },
                 "birthDate": {
                     "type": "string"
                 },
@@ -108,12 +249,6 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
-                },
-                "interests": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 },
                 "introduction": {
                     "type": "string"
@@ -125,35 +260,72 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "passwordHash": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "photos": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entity.Photo"
-                    }
+                    "type": "string"
                 },
                 "username": {
                     "type": "string"
                 }
             }
         },
-        "entity.Photo": {
+        "dto.SignUpDTO": {
+            "type": "object",
+            "required": [
+                "fullname",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "birthDate": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "introduction": {
+                    "type": "string"
+                },
+                "lookingFor": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateUserDTO": {
             "type": "object",
             "properties": {
-                "id": {
+                "birthDate": {
                     "type": "string"
                 },
-                "isMain": {
-                    "type": "boolean"
-                },
-                "url": {
+                "city": {
                     "type": "string"
                 },
-                "userID": {
+                "country": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "introduction": {
+                    "type": "string"
+                },
+                "lookingFor": {
                     "type": "string"
                 }
             }
@@ -161,9 +333,6 @@ const docTemplate = `{
         "entity.User": {
             "type": "object",
             "properties": {
-                "activeAt": {
-                    "type": "string"
-                },
                 "birthDate": {
                     "type": "string"
                 },
@@ -185,12 +354,6 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "interests": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "introduction": {
                     "type": "string"
                 },
@@ -198,21 +361,19 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "passwordHash": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "photos": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entity.Photo"
-                    }
+                    "type": "string"
                 },
                 "username": {
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

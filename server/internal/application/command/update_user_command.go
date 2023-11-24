@@ -1,6 +1,7 @@
 package command
 
 import (
+	"citasapp/internal/application/dto"
 	"citasapp/internal/domain/entity"
 	"citasapp/internal/domain/repository"
 	"citasapp/internal/infra/utils"
@@ -10,16 +11,13 @@ import (
 )
 
 type updateUserCommand struct {
-	ID        uuid.UUID `validate:"required"`
-	firstName string
-	lastName  string
+	dto.UpdateUserDTO
+	ID uuid.UUID `validate:"required"`
 }
 
-func NewUpdateUserCommand(ID uuid.UUID, firstName, lastName string) (*updateUserCommand, error) {
+func NewUpdateUserCommand(ID uuid.UUID, updateUser dto.UpdateUserDTO) (*updateUserCommand, error) {
 	cmd := &updateUserCommand{
-		ID:        ID,
-		firstName: firstName,
-		lastName:  lastName,
+		UpdateUserDTO: updateUser,
 	}
 	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
@@ -28,7 +26,7 @@ func NewUpdateUserCommand(ID uuid.UUID, firstName, lastName string) (*updateUser
 }
 
 func (cmd *updateUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user := entity.NewUser(cmd.firstName, cmd.lastName)
+	user := cmd.UpdateUserDTO.ToUser()
 	user, err := userRepo.UpdateByID(ctx, cmd.ID, user)
 	if err != nil {
 		return nil, err

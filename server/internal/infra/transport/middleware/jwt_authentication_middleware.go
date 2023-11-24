@@ -11,20 +11,20 @@ func JWTAuthenticationMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
-			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
+			utils.WriteError(w, http.StatusUnauthorized, utils.ErrRequiredAuthorizationHeader)
 			return
 		}
 
 		headerParts := strings.Split(authHeader, " ")
 		if len(headerParts) != 2 {
-			http.Error(w, "Authorization header is malformed", http.StatusUnauthorized)
+			utils.WriteError(w, http.StatusUnauthorized, utils.ErrMalformedAutorizationHeader)
 			return
 		}
 
 		tokenString := headerParts[1]
 		claims, err := utils.ValidateJWT(tokenString)
 		if err != nil {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			utils.WriteError(w, http.StatusUnauthorized, utils.ErrInvalidToken)
 			return
 		}
 

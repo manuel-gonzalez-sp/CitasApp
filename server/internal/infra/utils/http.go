@@ -8,7 +8,7 @@ import (
 	"go.uber.org/multierr"
 )
 
-type Response[T interface{}] struct {
+type Response[T any] struct {
 	Data   []T      `json:"data,omitempty"`
 	Errors []string `json:"errors,omitempty"`
 	Meta   Meta     `json:"meta"`

@@ -15,10 +15,10 @@ type sqliteUserRepository struct {
 }
 
 func NewSQLiteUserRepository(db *gorm.DB) repository.UserRepository {
-	err := db.AutoMigrate(&entity.User{})
-	if err != nil {
+	if err := db.AutoMigrate(&entity.User{}); err != nil {
 		utils.Logger.Fatalf("failed to run migration: %v\n", err)
 	}
+	// TODO: Unique Username
 	return &sqliteUserRepository{
 		db: db,
 	}
@@ -54,7 +54,7 @@ func (repo *sqliteUserRepository) FindByID(ctx context.Context, ID uuid.UUID) (*
 
 func (repo *sqliteUserRepository) FindByUsername(ctx context.Context, username string) (*entity.User, error) {
 	var user *entity.User
-	result := repo.db.First(&user, "Username = ?", username)
+	result := repo.db.First(&user, "username = ?", username)
 	if result.Error != nil {
 		return nil, result.Error
 	}

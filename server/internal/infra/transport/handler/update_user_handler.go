@@ -11,6 +11,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// @Summary	Update a new User
+// @Security ApiKeyAuth
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param input body dto.UpdateUserDTO true "Update DTO"
+// @Success	200 {object}	entity.User
+// @Router		/user [post]
 func UpdateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -28,7 +36,7 @@ func UpdateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		comm, commErr := command.NewUpdateUserCommand(ID, input.FirstName, input.LastName)
+		comm, commErr := command.NewUpdateUserCommand(ID, input)
 		if commErr != nil {
 			utils.WriteError(w, http.StatusBadRequest, commErr)
 			return

@@ -9,7 +9,11 @@ import (
 )
 
 // @Summary	Create a new User
-// @Produce	json
+// @Security ApiKeyAuth
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param input body dto.CreateUserDTO true "User DTO"
 // @Success	200 {object}	entity.User
 // @Router		/user [post]
 func CreateUserHandler(app *internal.CitasApp) http.HandlerFunc {
@@ -22,7 +26,7 @@ func CreateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		comm, commErr := command.NewCreateUserCommand(input.FirstName, input.LastName)
+		comm, commErr := command.NewCreateUserCommand(input)
 		if commErr != nil {
 			utils.WriteError(w, http.StatusBadRequest, commErr)
 			return

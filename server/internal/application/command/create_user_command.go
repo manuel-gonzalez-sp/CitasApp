@@ -1,6 +1,7 @@
 package command
 
 import (
+	"citasapp/internal/application/dto"
 	"citasapp/internal/domain/entity"
 	"citasapp/internal/domain/repository"
 	"citasapp/internal/infra/utils"
@@ -8,14 +9,12 @@ import (
 )
 
 type createUserCommand struct {
-	firstName string `validate:"required"`
-	lastName  string `validate:"required"`
+	dto.CreateUserDTO
 }
 
-func NewCreateUserCommand(firstName, lastName string) (*createUserCommand, error) {
+func NewCreateUserCommand(createUser dto.CreateUserDTO) (*createUserCommand, error) {
 	cmd := &createUserCommand{
-		firstName: firstName,
-		lastName:  lastName,
+		CreateUserDTO: createUser,
 	}
 	if err := utils.ValidateStruct(cmd); err != nil {
 		return nil, err
@@ -24,7 +23,7 @@ func NewCreateUserCommand(firstName, lastName string) (*createUserCommand, error
 }
 
 func (cmd *createUserCommand) Handle(ctx context.Context, userRepo repository.UserRepository) (*entity.User, error) {
-	user := entity.NewUser(cmd.firstName, cmd.lastName)
+	user := cmd.CreateUserDTO.ToUser()
 	if err := userRepo.Create(ctx, user); err != nil {
 		return nil, err
 	}

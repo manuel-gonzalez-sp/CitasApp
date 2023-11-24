@@ -11,7 +11,10 @@ import (
 )
 
 // @Summary	Get a single User based on the provided ID
-// @Produce	json
+// @Security ApiKeyAuth
+// @Tags Users
+// @Accept json
+// @Produce json
 // @Success	200	{object} entity.User
 // @Router		/user/{id} [get]
 func GetUserHandler(app *internal.CitasApp) http.HandlerFunc {

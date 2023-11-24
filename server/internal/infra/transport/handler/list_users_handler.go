@@ -8,7 +8,10 @@ import (
 )
 
 // @Summary	Get all users
-// @Produce	json
+// @Security ApiKeyAuth
+// @Tags Users
+// @Accept json
+// @Produce json
 // @Success	200	{array}	entity.User
 // @Router		/user [get]
 func ListUsersHandler(app *internal.CitasApp) http.HandlerFunc {

@@ -15,15 +15,17 @@ import (
 // @title			CitasApp API
 // @version		1.0
 // @description	This is a HTTP API for CitasApp.
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func HttpRouter(app *internal.CitasApp) *mux.Router {
 	router := mux.NewRouter()
 
-	router.Handle("/login",
-		middleware.JWTAuthenticationMiddleware(handler.LogInHandler(app)),
-	).Methods(http.MethodPost)
+	router.Handle("/login", handler.LogInHandler(app)).Methods(http.MethodPost)
+	router.Handle("/signup", handler.SignUpHandler(app)).Methods(http.MethodPost)
 
 	router.Handle("/user", handler.CreateUserHandler(app)).Methods(http.MethodPost)
-	router.Handle("/user", handler.ListUsersHandler(app)).Methods(http.MethodGet)
+	router.Handle("/user", middleware.JWTAuthenticationMiddleware(handler.ListUsersHandler(app))).Methods(http.MethodGet)
 	router.Handle("/user/{id}", handler.GetUserHandler(app)).Methods(http.MethodGet)
 	router.Handle("/user/{id}", handler.UpdateUserHandler(app)).Methods(http.MethodPatch)
 
