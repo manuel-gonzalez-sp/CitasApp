@@ -1,4 +1,4 @@
-package transport
+package handler
 
 import (
 	"citasapp/internal"
@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func updateUserHandler(app *internal.CitasApp) http.HandlerFunc {
+func UpdateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		vars := mux.Vars(r)

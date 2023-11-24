@@ -1,4 +1,4 @@
-package transport
+package handler
 
 import (
 	"citasapp/internal"
@@ -12,7 +12,7 @@ import (
 // @Produce	json
 // @Success	200 {object}	entity.User
 // @Router		/user [post]
-func createUserHandler(app *internal.CitasApp) http.HandlerFunc {
+func CreateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 

@@ -52,6 +52,15 @@ func (repo *sqliteUserRepository) FindByID(ctx context.Context, ID uuid.UUID) (*
 	return user, nil
 }
 
+func (repo *sqliteUserRepository) FindByUsername(ctx context.Context, username string) (*entity.User, error) {
+	var user *entity.User
+	result := repo.db.First(&user, "Username = ?", username)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return user, nil
+}
+
 func (repo *sqliteUserRepository) UpdateByID(ctx context.Context, ID uuid.UUID, user *entity.User) (*entity.User, error) {
 	user.ID = ID
 	result := repo.db.Model(user).Updates(*user)

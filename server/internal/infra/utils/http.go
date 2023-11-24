@@ -8,7 +8,6 @@ import (
 	"go.uber.org/multierr"
 )
 
-// TODO:  HTTP filters/sorting
 type Response[T interface{}] struct {
 	Data   []T      `json:"data,omitempty"`
 	Errors []string `json:"errors,omitempty"`

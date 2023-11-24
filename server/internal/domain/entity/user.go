@@ -1,19 +1,32 @@
 package entity
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
 
 type User struct {
-	ID        uuid.UUID
-	FirstName string
-	LastName  string
+	ID           uuid.UUID
+	Username     string
+	Fullname     string
+	BirthDate    time.Time
+	Gender       string
+	Introduction string
+	LookingFor   string
+	//Interests    []string
+	City    string
+	Country string
+	//Photos       []Photo
+	CreatedAt    time.Time
+	ActiveAt     time.Time
+	PasswordHash []byte
 }
 
-func NewUser(firstName, lastName string) *User {
+func NewUser(username string, fullname string) *User {
 	return &User{
-		ID:        uuid.New(),
-		FirstName: firstName,
-		LastName:  lastName,
+		ID:       uuid.New(),
+		Username: username,
+		Fullname: fullname,
 	}
 }

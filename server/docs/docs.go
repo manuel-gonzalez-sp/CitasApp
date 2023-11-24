@@ -15,6 +15,22 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Log-in user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoggedInDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "produces": [
@@ -66,16 +82,134 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entity.User": {
+        "dto.LoggedInDTO": {
             "type": "object",
             "properties": {
-                "firstName": {
+                "activeAt": {
+                    "type": "string"
+                },
+                "birthDate": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "gender": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "lastName": {
+                "interests": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "introduction": {
+                    "type": "string"
+                },
+                "jwtToken": {
+                    "type": "string"
+                },
+                "lookingFor": {
+                    "type": "string"
+                },
+                "passwordHash": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Photo"
+                    }
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Photo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "isMain": {
+                    "type": "boolean"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.User": {
+            "type": "object",
+            "properties": {
+                "activeAt": {
+                    "type": "string"
+                },
+                "birthDate": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "interests": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "introduction": {
+                    "type": "string"
+                },
+                "lookingFor": {
+                    "type": "string"
+                },
+                "passwordHash": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Photo"
+                    }
+                },
+                "username": {
                     "type": "string"
                 }
             }

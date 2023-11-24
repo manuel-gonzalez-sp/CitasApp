@@ -2,6 +2,8 @@ package transport
 
 import (
 	"citasapp/internal"
+	"citasapp/internal/infra/transport/handler"
+	"citasapp/internal/infra/transport/middleware"
 	"net/http"
 
 	_ "citasapp/docs"
@@ -16,14 +18,14 @@ import (
 func HttpRouter(app *internal.CitasApp) *mux.Router {
 	router := mux.NewRouter()
 
-	router.Handle("/user", createUserHandler(app)).Methods(http.MethodPost)
-	router.Handle("/user", listUsersHandler(app)).Methods(http.MethodGet)
-	router.Handle("/user/{id}", getUserHandler(app)).Methods(http.MethodGet)
-	router.Handle("/user/{id}", updateUserHandler(app)).Methods(http.MethodPatch)
+	router.Handle("/login",
+		middleware.JWTAuthenticationMiddleware(handler.LogInHandler(app)),
+	).Methods(http.MethodPost)
 
-	router.Handle("/message", listMessagesHandler(app)).Methods(http.MethodGet)
-	router.Handle("/message/send", sendMessageHandler(app)).Methods(http.MethodPost)
-	router.Handle("/message/{id}/read", readMessageHandler(app)).Methods(http.MethodPatch)
+	router.Handle("/user", handler.CreateUserHandler(app)).Methods(http.MethodPost)
+	router.Handle("/user", handler.ListUsersHandler(app)).Methods(http.MethodGet)
+	router.Handle("/user/{id}", handler.GetUserHandler(app)).Methods(http.MethodGet)
+	router.Handle("/user/{id}", handler.UpdateUserHandler(app)).Methods(http.MethodPatch)
 
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 

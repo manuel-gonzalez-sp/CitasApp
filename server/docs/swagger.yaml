@@ -1,11 +1,89 @@
 definitions:
-  entity.User:
+  dto.LoggedInDTO:
     properties:
-      firstName:
+      activeAt:
+        type: string
+      birthDate:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      createdAt:
+        type: string
+      fullname:
+        type: string
+      gender:
         type: string
       id:
         type: string
-      lastName:
+      interests:
+        items:
+          type: string
+        type: array
+      introduction:
+        type: string
+      jwtToken:
+        type: string
+      lookingFor:
+        type: string
+      passwordHash:
+        items:
+          type: integer
+        type: array
+      photos:
+        items:
+          $ref: '#/definitions/entity.Photo'
+        type: array
+      username:
+        type: string
+    type: object
+  entity.Photo:
+    properties:
+      id:
+        type: string
+      isMain:
+        type: boolean
+      url:
+        type: string
+      userID:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      activeAt:
+        type: string
+      birthDate:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      createdAt:
+        type: string
+      fullname:
+        type: string
+      gender:
+        type: string
+      id:
+        type: string
+      interests:
+        items:
+          type: string
+        type: array
+      introduction:
+        type: string
+      lookingFor:
+        type: string
+      passwordHash:
+        items:
+          type: integer
+        type: array
+      photos:
+        items:
+          $ref: '#/definitions/entity.Photo'
+        type: array
+      username:
         type: string
     type: object
 info:
@@ -14,6 +92,16 @@ info:
   title: CitasApp API
   version: "1.0"
 paths:
+  /login:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoggedInDTO'
+      summary: Log-in user
   /user:
     get:
       produces:
