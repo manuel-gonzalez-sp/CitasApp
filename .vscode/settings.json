@@ -7,10 +7,16 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "server/vendor": true,
-        ".vscode": true
+        ".vscode": true,
+        "client/src/env.d.ts": true,
+        "client/package-lock.json": true,
+        "client/.vscode": true
     },
     "hide-files.files": [
         "server/vendor",
-        ".vscode"
+        ".vscode",
+        "client/src/env.d.ts",
+        "client/package-lock.json",
+        "client/.vscode"
     ]
 }
