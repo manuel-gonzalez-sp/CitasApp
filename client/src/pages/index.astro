@@ -1,5 +1,5 @@
 ---
-import Navbar from "../components/Navbar.astro";
+import Navbar from "../components/Navbar.vue";
 ---
 
 <html lang="en" data-theme="night">
@@ -11,7 +11,7 @@ import Navbar from "../components/Navbar.astro";
     <title>Astro</title>
   </head>
   <body>
-    <Navbar />
+    <Navbar client:load />
 
      siono rasa
   </body>

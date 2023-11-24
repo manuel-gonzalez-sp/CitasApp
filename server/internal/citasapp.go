@@ -4,6 +4,8 @@ import (
 	"citasapp/internal/application/command"
 	"citasapp/internal/infra/persistence"
 	"net/http"
+
+	"github.com/gorilla/handlers"
 )
 
 type CitasApp struct {
@@ -22,24 +24,12 @@ func NewCitasApp() (*CitasApp, error) {
 }
 
 func (app *CitasApp) Run(router http.Handler) error {
-	http.ListenAndServe(":3000", router)
+	corsOpts := handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With"}),
+		handlers.AllowCredentials(),
+	)
+	http.ListenAndServe(":3000", corsOpts(router))
 	return nil
 }
-
-// JWT Auth
-// Messages
-// Members
-// Lists
-// GetAge
-// Photo
-
-// Routes
-// [AuthGuard]
-// "": HomeComponent
-// members : MemberList
-// members/:id : MemberDetail
-// lists : ListsComponent
-// messages : MessagesComponent
-
-// errors: Test ErrorComponent
-// ** : HomeComponent, pathMatch: full
