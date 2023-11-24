@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+import background from "../../assets/auth_background.png";
+import AuthForm from "../../components/AuthForm.vue";
+import CleanLayout from "../../layouts/CleanLayout.astro";
+import { sessionStore } from "../../services/session-service";
+
+if (sessionStore.value?.jwtToken) {
+  return Astro.redirect("/");
+}
+---
+
+<CleanLayout title="Auth">
+  <div class="flex h-screen bg-black">
+    <!-- Left half with image -->
+    <div class="w-1/2 h-full">
+      <Image
+        src={background}
+        alt="CitasApp"
+        class="object-cover w-full h-full"
+      />
+    </div>
+    <!-- Right half with centered content -->
+    <div class="w-1/2 h-full flex items-center justify-center">
+      <div class="text-center">
+        <AuthForm client:load />
+      </div>
+    </div>
+  </div>
+</CleanLayout>

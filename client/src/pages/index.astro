@@ -1,18 +1,13 @@
 ---
-import Navbar from "../components/Navbar.vue";
+import MainLayout from "../layouts/MainLayout.astro";
+import { sessionStore } from "../services/session-service";
+
+if (!sessionStore.value?.jwtToken) {
+  return Astro.redirect("/auth");
+}
 ---
 
-<html lang="en" data-theme="night">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <Navbar client:load />
-
-     siono rasa
-  </body>
-</html>
+<MainLayout title="Landing">
+  <h1>landing peich</h1>
+  <button class="btn btn-primary">Botón HD</button>
+</MainLayout>

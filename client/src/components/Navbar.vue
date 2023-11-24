@@ -47,12 +47,12 @@ import { logIn } from '../services/session-service';
 const testo = ref(false)
 
 
+
 async function toggle() {
   const data = await logIn({
     username: 'yomero',
     password: 'kwamero',
   })
-  alert(data.jwtToken)
   testo.value = !testo.value
 }
 
