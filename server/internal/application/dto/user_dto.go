@@ -7,6 +7,18 @@ import (
 	"github.com/google/uuid"
 )
 
+type UserDTO struct {
+	ID           uuid.UUID `json:"id" validate:"required"`
+	Username     string    `json:"username" validate:"required"`
+	Fullname     string    `json:"fullname" validate:"required"`
+	BirthDate    time.Time `json:"birthDate"`
+	Gender       string    `json:"gender"`
+	Introduction string    `json:"introduction"`
+	LookingFor   string    `json:"lookingFor"`
+	City         string    `json:"city"`
+	Country      string    `json:"country"`
+	CreatedAt    time.Time `json:"createdAt"`
+}
 type CreateUserDTO struct {
 	Username     string    `json:"username" validate:"required"`
 	Fullname     string    `json:"fullname" validate:"required"`
@@ -55,4 +67,28 @@ func (dto *UpdateUserDTO) ToUser() *entity.User {
 		City:         dto.City,
 		Country:      dto.Country,
 	}
+}
+
+func ToUserDTO(user *entity.User) *UserDTO {
+	return &UserDTO{
+		ID:           user.ID,
+		Username:     user.Username,
+		Fullname:     user.Fullname,
+		BirthDate:    user.BirthDate,
+		Gender:       user.Gender,
+		Introduction: user.Introduction,
+		LookingFor:   user.LookingFor,
+		City:         user.City,
+		Country:      user.Country,
+		CreatedAt:    user.CreatedAt,
+	}
+}
+
+func ToUserDTOs(users []*entity.User) []*UserDTO {
+	userDTOs := make([]*UserDTO, 0, len(users))
+	for _, user := range users {
+		userDTO := ToUserDTO(user)
+		userDTOs = append(userDTOs, userDTO)
+	}
+	return userDTOs
 }

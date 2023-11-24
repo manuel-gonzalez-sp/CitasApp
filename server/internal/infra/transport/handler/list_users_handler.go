@@ -3,6 +3,7 @@ package handler
 import (
 	"citasapp/internal"
 	"citasapp/internal/application/command"
+	"citasapp/internal/application/dto"
 	"citasapp/internal/infra/utils"
 	"net/http"
 )
@@ -12,7 +13,7 @@ import (
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Success	200	{array}	entity.User
+// @Success	200	{array}	dto.UserDTO
 // @Router		/user [get]
 func ListUsersHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +31,7 @@ func ListUsersHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		utils.WriteResponse(w, http.StatusOK, users...)
+		dtos := dto.ToUserDTOs(users)
+		utils.WriteResponse(w, http.StatusOK, dtos...)
 	}
 }

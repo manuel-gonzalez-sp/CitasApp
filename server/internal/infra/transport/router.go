@@ -24,10 +24,10 @@ func HttpRouter(app *internal.CitasApp) *mux.Router {
 	router.Handle("/login", handler.LogInHandler(app)).Methods(http.MethodPost)
 	router.Handle("/signup", handler.SignUpHandler(app)).Methods(http.MethodPost)
 
-	router.Handle("/user", handler.CreateUserHandler(app)).Methods(http.MethodPost)
+	router.Handle("/user", middleware.JWTAuthenticationMiddleware(handler.CreateUserHandler(app))).Methods(http.MethodPost)
 	router.Handle("/user", middleware.JWTAuthenticationMiddleware(handler.ListUsersHandler(app))).Methods(http.MethodGet)
-	router.Handle("/user/{id}", handler.GetUserHandler(app)).Methods(http.MethodGet)
-	router.Handle("/user/{id}", handler.UpdateUserHandler(app)).Methods(http.MethodPatch)
+	router.Handle("/user/{id}", middleware.JWTAuthenticationMiddleware(handler.GetUserHandler(app))).Methods(http.MethodGet)
+	router.Handle("/user/{id}", middleware.JWTAuthenticationMiddleware(handler.UpdateUserHandler(app))).Methods(http.MethodPatch)
 
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 

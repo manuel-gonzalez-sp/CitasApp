@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param input body dto.CreateUserDTO true "User DTO"
-// @Success	200 {object}	entity.User
+// @Success	200 {object}	dto.UserDTO
 // @Router		/user [post]
 func CreateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -38,6 +38,7 @@ func CreateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		utils.WriteResponse(w, http.StatusOK, user)
+		dto := dto.ToUserDTO(user)
+		utils.WriteResponse(w, http.StatusOK, dto)
 	}
 }

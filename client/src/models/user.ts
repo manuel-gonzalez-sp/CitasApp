@@ -2,12 +2,12 @@ export interface User {
     id: number;
     username: string;
     fullname: string;
-    birthDate: Date;
-    gender: string;
-    introduction: string;
-    lookingFor: string;
-    city: string;
-    country: string;
+    birthDate?: Date;
+    gender?: string;
+    introduction?: string;
+    lookingFor?: string;
+    city?: string;
+    country?: string;
     createdAt: Date;
     // photos
     // interests

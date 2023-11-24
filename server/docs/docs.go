@@ -106,13 +106,49 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.User"
+                                "$ref": "#/definitions/dto.UserDTO"
                             }
                         }
                     }
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new User",
+                "parameters": [
+                    {
+                        "description": "User DTO",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateUserDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserDTO"
+                        }
+                    }
+                }
+            },
+            "patch": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -143,7 +179,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.User"
+                            "$ref": "#/definitions/dto.UserDTO"
                         }
                     }
                 }
@@ -166,11 +202,20 @@ const docTemplate = `{
                     "Users"
                 ],
                 "summary": "Get a single User based on the provided ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.User"
+                            "$ref": "#/definitions/dto.UserDTO"
                         }
                     }
                 }
@@ -330,8 +375,13 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.User": {
+        "dto.UserDTO": {
             "type": "object",
+            "required": [
+                "fullname",
+                "id",
+                "username"
+            ],
             "properties": {
                 "birthDate": {
                     "type": "string"
@@ -358,9 +408,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "lookingFor": {
-                    "type": "string"
-                },
-                "passwordHash": {
                     "type": "string"
                 },
                 "username": {

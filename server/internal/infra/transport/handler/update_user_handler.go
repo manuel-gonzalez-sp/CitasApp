@@ -17,8 +17,8 @@ import (
 // @Accept json
 // @Produce json
 // @Param input body dto.UpdateUserDTO true "Update DTO"
-// @Success	200 {object}	entity.User
-// @Router		/user [post]
+// @Success	200 {object}	dto.UserDTO
+// @Router		/user [patch]
 func UpdateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -48,6 +48,7 @@ func UpdateUserHandler(app *internal.CitasApp) http.HandlerFunc {
 			return
 		}
 
-		utils.WriteResponse(w, http.StatusOK, user)
+		dto := dto.ToUserDTO(user)
+		utils.WriteResponse(w, http.StatusOK, dto)
 	}
 }
