@@ -1,0 +1,8 @@
+---
+import UsersList from "../../components/UsersList.vue";
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout title="Usuarios">
+  <UsersList client:load />
+</MainLayout>

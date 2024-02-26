@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id: string;
     username: string;
     fullname: string;
     birthDate?: Date;
@@ -9,8 +9,14 @@ export interface User {
     city?: string;
     country?: string;
     createdAt: Date;
-    // photos
+    photos?: Photo[];
     // interests
+}
+
+export interface Photo {
+    id: string;
+    url: string;
+    isMain: boolean;
 }
 
 export interface CreateUser {

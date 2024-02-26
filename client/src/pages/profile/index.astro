@@ -1,0 +1,10 @@
+---
+import EditProfile from "../../components/EditProfile.vue";
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout title="Perfil">
+  <div class="p-8 w-1/2 text-center mx-auto">
+    <EditProfile client:load />
+  </div>
+</MainLayout>

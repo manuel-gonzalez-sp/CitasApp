@@ -1,4 +1,4 @@
-import type { User } from "../models/user";
+import type { UpdateUser, User } from "../models/user";
 import type { ApiResponse } from "../utils/api-response";
 import { sessionStore } from "./session-service";
 
@@ -25,6 +25,23 @@ export async function getUserById(id: string): Promise<User | null> {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${sessionStore.value?.jwtToken}`
         },
+    });
+    if (response.ok) {
+        const res = await (response.json() as Promise<ApiResponse<User>>);
+        return res.data[0];
+    }
+    return null;
+}
+
+
+export async function updateUserById(id: string, user: UpdateUser): Promise<User | null> {
+    const response = await fetch(`${import.meta.env.PUBLIC_SERVER_URL}/user/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStore.value?.jwtToken}`
+        },
+        body: JSON.stringify(user)
     });
     if (response.ok) {
         const res = await (response.json() as Promise<ApiResponse<User>>);
