@@ -18,6 +18,7 @@ type User struct {
 	Country      string
 	CreatedAt    time.Time
 	PasswordHash string
+	Photos       []Photo
 	//Interests    []string
-	//Photos       []Photo
+
 }

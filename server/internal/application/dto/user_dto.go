@@ -8,16 +8,17 @@ import (
 )
 
 type UserDTO struct {
-	ID           uuid.UUID `json:"id" validate:"required"`
-	Username     string    `json:"username" validate:"required"`
-	Fullname     string    `json:"fullname" validate:"required"`
-	BirthDate    time.Time `json:"birthDate"`
-	Gender       string    `json:"gender"`
-	Introduction string    `json:"introduction"`
-	LookingFor   string    `json:"lookingFor"`
-	City         string    `json:"city"`
-	Country      string    `json:"country"`
-	CreatedAt    time.Time `json:"createdAt"`
+	ID           uuid.UUID  `json:"id" validate:"required"`
+	Username     string     `json:"username" validate:"required"`
+	Fullname     string     `json:"fullname" validate:"required"`
+	BirthDate    time.Time  `json:"birthDate"`
+	Gender       string     `json:"gender"`
+	Introduction string     `json:"introduction"`
+	LookingFor   string     `json:"lookingFor"`
+	City         string     `json:"city"`
+	Country      string     `json:"country"`
+	CreatedAt    time.Time  `json:"createdAt"`
+	Photos       []PhotoDTO `json:"photos"`
 }
 type CreateUserDTO struct {
 	Username     string    `json:"username" validate:"required"`
@@ -28,6 +29,7 @@ type CreateUserDTO struct {
 	LookingFor   string    `json:"lookingFor"`
 	City         string    `json:"city"`
 	Country      string    `json:"country"`
+	PhotoURL     string    `json:"photoUrl" validate:"url"`
 }
 
 type UpdateUserDTO struct {
@@ -52,6 +54,13 @@ func (dto *CreateUserDTO) ToUser() *entity.User {
 		LookingFor:   dto.LookingFor,
 		City:         dto.City,
 		Country:      dto.Country,
+		Photos: []entity.Photo{
+			{
+				ID:     uuid.New(),
+				URL:    dto.PhotoURL,
+				IsMain: true,
+			},
+		},
 	}
 }
 
@@ -70,7 +79,7 @@ func (dto *UpdateUserDTO) ToUser() *entity.User {
 }
 
 func ToUserDTO(user *entity.User) *UserDTO {
-	return &UserDTO{
+	dto := &UserDTO{
 		ID:           user.ID,
 		Username:     user.Username,
 		Fullname:     user.Fullname,
@@ -81,7 +90,14 @@ func ToUserDTO(user *entity.User) *UserDTO {
 		City:         user.City,
 		Country:      user.Country,
 		CreatedAt:    user.CreatedAt,
+		Photos:       []PhotoDTO{},
 	}
+	if user.Photos != nil {
+		for _, value := range user.Photos {
+			dto.Photos = append(dto.Photos, *ToPhotoDTO(&value))
+		}
+	}
+	return dto
 }
 
 func ToUserDTOs(users []*entity.User) []*UserDTO {

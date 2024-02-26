@@ -251,6 +251,9 @@ const docTemplate = `{
                 "lookingFor": {
                     "type": "string"
                 },
+                "photoUrl": {
+                    "type": "string"
+                },
                 "username": {
                     "type": "string"
                 }
@@ -273,6 +276,11 @@ const docTemplate = `{
         },
         "dto.LoggedInDTO": {
             "type": "object",
+            "required": [
+                "fullname",
+                "id",
+                "username"
+            ],
             "properties": {
                 "birthDate": {
                     "type": "string"
@@ -304,10 +312,30 @@ const docTemplate = `{
                 "lookingFor": {
                     "type": "string"
                 },
-                "passwordHash": {
-                    "type": "string"
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PhotoDTO"
+                    }
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.PhotoDTO": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "isMain": {
+                    "type": "boolean"
+                },
+                "url": {
                     "type": "string"
                 }
             }
@@ -342,6 +370,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                },
+                "photoUrl": {
                     "type": "string"
                 },
                 "username": {
@@ -409,6 +440,12 @@ const docTemplate = `{
                 },
                 "lookingFor": {
                     "type": "string"
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PhotoDTO"
+                    }
                 },
                 "username": {
                     "type": "string"

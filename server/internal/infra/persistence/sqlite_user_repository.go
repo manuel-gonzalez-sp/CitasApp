@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type sqliteUserRepository struct {
@@ -15,6 +16,9 @@ type sqliteUserRepository struct {
 }
 
 func NewSQLiteUserRepository(db *gorm.DB) repository.UserRepository {
+	if err := db.AutoMigrate(&entity.Photo{}); err != nil {
+		utils.Logger.Fatalf("failed to run migration: %v\n", err)
+	}
 	if err := db.AutoMigrate(&entity.User{}); err != nil {
 		utils.Logger.Fatalf("failed to run migration: %v\n", err)
 	}
@@ -36,7 +40,7 @@ func (repo *sqliteUserRepository) DeleteByID(ctx context.Context, ID uuid.UUID) 
 
 func (repo *sqliteUserRepository) FindAll(ctx context.Context) ([]*entity.User, error) {
 	var users []*entity.User
-	result := repo.db.Find(&users)
+	result := repo.db.Preload(clause.Associations).Find(&users)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -45,7 +49,7 @@ func (repo *sqliteUserRepository) FindAll(ctx context.Context) ([]*entity.User, 
 
 func (repo *sqliteUserRepository) FindByID(ctx context.Context, ID uuid.UUID) (*entity.User, error) {
 	var user *entity.User
-	result := repo.db.First(&user, ID)
+	result := repo.db.Preload(clause.Associations).First(&user, ID)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -54,7 +58,7 @@ func (repo *sqliteUserRepository) FindByID(ctx context.Context, ID uuid.UUID) (*
 
 func (repo *sqliteUserRepository) FindByUsername(ctx context.Context, username string) (*entity.User, error) {
 	var user *entity.User
-	result := repo.db.First(&user, "username = ?", username)
+	result := repo.db.Preload(clause.Associations).First(&user, "username = ?", username)
 	if result.Error != nil {
 		return nil, result.Error
 	}
